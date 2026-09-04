@@ -173,13 +173,13 @@ Sub PrepareStandsWithInputBox()
 
 
     ' --------------------------------------------------------
-    ' ОКНО ABORT
+    ' ПОКАЗЫВАЕМ ФОРМУ ABORT
     ' --------------------------------------------------------
 
+    frmAbort.Show vbModeless
+    
     frmAbort.lblStatus.Caption = "Preparing..."
     frmAbort.cmdAbort.Enabled = True
-
-    frmAbort.Show vbModeless
 
     DoEvents
 
@@ -215,7 +215,10 @@ Sub PrepareStandsWithInputBox()
 
     For i = 1 To shapeCount
 
-        If i Mod ABORT_CHECK_EVERY = 0 And CheckAbort Then GoTo AbortMacro
+        If i Mod ABORT_CHECK_EVERY = 0 Then
+            DoEvents
+            If CancelRequested Then GoTo AbortMacro
+        End If
 
         Set s = lr.Shapes(i)
         If s.Locked Then s.Locked = False
@@ -229,11 +232,13 @@ Sub PrepareStandsWithInputBox()
 
     frmAbort.lblStatus.Caption = "Ungrouping..."
 
-    If CheckAbort(True) Then GoTo AbortMacro
+    DoEvents
+    If CancelRequested Then GoTo AbortMacro
 
     initialSelection.UngroupAll
 
-    If CheckAbort(True) Then GoTo AbortMacro
+    DoEvents
+    If CancelRequested Then GoTo AbortMacro
 
     ActiveDocument.ClearSelection
 
@@ -255,7 +260,10 @@ Sub PrepareStandsWithInputBox()
 
     For i = 1 To shapeCount
 
-        If i Mod ABORT_CHECK_EVERY = 0 And CheckAbort Then GoTo AbortMacro
+        If i Mod ABORT_CHECK_EVERY = 0 Then
+            DoEvents
+            If CancelRequested Then GoTo AbortMacro
+        End If
 
         Set s = lr.Shapes(i)
 
@@ -291,7 +299,10 @@ Sub PrepareStandsWithInputBox()
 
     For i = shapeCount To 1 Step -1
 
-        If i Mod ABORT_CHECK_EVERY = 0 And CheckAbort Then GoTo AbortMacro
+        If i Mod ABORT_CHECK_EVERY = 0 Then
+            DoEvents
+            If CancelRequested Then GoTo AbortMacro
+        End If
 
         Set s = lr.Shapes(i)
 
@@ -323,7 +334,10 @@ Sub PrepareStandsWithInputBox()
 
     For i = 1 To shapeCount
 
-        If i Mod ABORT_CHECK_EVERY = 0 And CheckAbort Then GoTo AbortMacro
+        If i Mod ABORT_CHECK_EVERY = 0 Then
+            DoEvents
+            If CancelRequested Then GoTo AbortMacro
+        End If
 
         Set s = lr.Shapes(i)
 
@@ -364,7 +378,10 @@ Sub PrepareStandsWithInputBox()
 
     For i = 1 To candidateCount
 
-        If i Mod ABORT_CHECK_EVERY = 0 And CheckAbort Then GoTo AbortMacro
+        If i Mod ABORT_CHECK_EVERY = 0 Then
+            DoEvents
+            If CancelRequested Then GoTo AbortMacro
+        End If
 
         Set s = candidatesArray(i)
         isInsideAnother = False
@@ -412,7 +429,10 @@ Sub PrepareStandsWithInputBox()
 
     For i = 1 To stands.Count
 
-        If i Mod ABORT_CHECK_EVERY = 0 And CheckAbort Then GoTo AbortMacro
+        If i Mod ABORT_CHECK_EVERY = 0 Then
+            DoEvents
+            If CancelRequested Then GoTo AbortMacro
+        End If
 
         Set s = stands(i)
         duplicateFound = False
@@ -463,7 +483,10 @@ Sub PrepareStandsWithInputBox()
 
     For i = shapeCount To 1 Step -1
 
-        If i Mod ABORT_CHECK_EVERY = 0 And CheckAbort Then GoTo AbortMacro
+        If i Mod ABORT_CHECK_EVERY = 0 Then
+            DoEvents
+            If CancelRequested Then GoTo AbortMacro
+        End If
 
         Set innerShape = lr.Shapes(i)
 
@@ -520,7 +543,10 @@ Sub PrepareStandsWithInputBox()
 
     For j = 1 To stands.Count
 
-        If j Mod ABORT_CHECK_EVERY = 0 And CheckAbort Then GoTo AbortMacro
+        If j Mod ABORT_CHECK_EVERY = 0 Then
+            DoEvents
+            If CancelRequested Then GoTo AbortMacro
+        End If
 
         Set s = stands(j)
 
@@ -603,16 +629,18 @@ Sub PrepareStandsWithInputBox()
     CancelRequested = False
     AbortCounter = 0
 
+    frmAbort.Show vbModeless
     frmAbort.lblStatus.Caption = "Applying color..."
     frmAbort.cmdAbort.Enabled = True
-
-    frmAbort.Show vbModeless
 
     DoEvents
 
     For j = 1 To stands.Count
 
-        If j Mod ABORT_CHECK_EVERY = 0 And CheckAbort Then GoTo AbortMacro
+        If j Mod ABORT_CHECK_EVERY = 0 Then
+            DoEvents
+            If CancelRequested Then GoTo AbortMacro
+        End If
 
         Set s = stands(j)
 
